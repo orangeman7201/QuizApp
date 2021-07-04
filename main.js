@@ -106,12 +106,10 @@ function createTopPage() {
   createStartButton();
 }
 
-document.getElementById('start-button').addEventListener('click', () => {
+document.getElementById('start-button').addEventListener('click', async() => {
     head.innerHTML = "取得中";
     inner.innerHTML = "少々お待ちください";
     ul.removeChild(startButton);
-    getQuizzJson()
-    .then((data) => {
+    const data = await getQuizzJson();
       changeHTML(data);
-    })
 });
