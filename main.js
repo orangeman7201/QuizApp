@@ -10,15 +10,14 @@ let count = 1;
 let correctCounter = 0;
 
 
-const asynchronousFunc = () => {
-  return new Promise((resolve, reject) => {
+const getQuizzJson = async() => {
+  try {
+    const response = await
     fetch('https://opentdb.com/api.php?amount=50&type=multiple')
-    .then((response) => {
-      return resolve(response.json())
-    }).catch(() => {
-      return reject('失敗')
-    })
-  })
+    return response.json();
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 function arrayShuffle(array) {
@@ -88,16 +87,14 @@ function createStartButton() {
   const startButton = document.createElement('button');
   startButton.id = 'start-button';
   startButton.innerHTML = '開始';
-  startButton.addEventListener('click', () => {
+  startButton.addEventListener('click', async() => {
     head.innerHTML = "取得中";
     inner.innerHTML = "少々お待ちください";
     count = 1;
     correctCounter = 0;
     ul.removeChild(startButton);
-    asynchronousFunc()
-    .then((data) => {
-      changeHTML(data);
-    })
+    const data = await getQuizzJson();
+    changeHTML(data);
   });
   ul.appendChild(startButton);
 }
@@ -113,7 +110,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     head.innerHTML = "取得中";
     inner.innerHTML = "少々お待ちください";
     ul.removeChild(startButton);
-    asynchronousFunc()
+    getQuizzJson()
     .then((data) => {
       changeHTML(data);
     })
